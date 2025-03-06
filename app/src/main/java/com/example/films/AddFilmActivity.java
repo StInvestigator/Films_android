@@ -66,6 +66,7 @@ public class AddFilmActivity extends AppCompatActivity {
             Film newFilm = new Film(0, title, selectedGenre, year);
 
             Films.addFilm(newFilm);
+            FilmStorage.saveFilms(this,Films.getFilms());
             Toast.makeText(AddFilmActivity.this, "Film added: " + newFilm.getTitle(), Toast.LENGTH_SHORT).show();
             finish();
         });

@@ -1,6 +1,7 @@
 package com.example.films;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,11 +27,9 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Films.addFilm(new Film(0,"Ultra film","action",2005));
-        Films.addFilm(new Film(1,"Ultra film 2","action",2006));
-        Films.addFilm(new Film(2,"Ultra film 3","action",2008));
 
         ListView list = findViewById(R.id.film_list);
+        Films.getFilms().addAll(FilmStorage.loadFilms(this));
         list.setAdapter(Films.getAdapter());
     }
 
