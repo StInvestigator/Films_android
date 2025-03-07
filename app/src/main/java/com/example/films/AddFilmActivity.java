@@ -1,6 +1,5 @@
 package com.example.films;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,11 +15,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.films.model.Film;
+import com.example.films.model.Genre;
+import com.example.films.util.Unit;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AddFilmActivity extends AppCompatActivity {
-    private EditText editTitle, editYear;
+    private EditText editTitle, editYear, editDesc;
     private Spinner spinnerGenre;
     private Button btnSave;
     private String selectedGenre;
@@ -32,10 +36,11 @@ public class AddFilmActivity extends AppCompatActivity {
 
         editTitle = findViewById(R.id.editTitle);
         editYear = findViewById(R.id.editYear);
+        editDesc = findViewById(R.id.editDesc);
         spinnerGenre = findViewById(R.id.spinnerGenre);
         btnSave = findViewById(R.id.btnSave);
 
-        List<String> genres = Arrays.asList("Drama", "Comedy", "Action", "Fiction", "Horror");
+        List<String> genres = Unit.getGenreRepository().findAll().stream().map(Genre::getName).collect(Collectors.toList());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, genres);
@@ -56,17 +61,22 @@ public class AddFilmActivity extends AppCompatActivity {
         btnSave.setOnClickListener(v -> {
             String title = editTitle.getText().toString().trim();
             String yearStr = editYear.getText().toString().trim();
+            String desc = editDesc.getText().toString().trim();
 
-            if (title.isEmpty() || yearStr.isEmpty() || selectedGenre.isEmpty()) {
+            if (title.isEmpty() || yearStr.isEmpty() || selectedGenre.isEmpty() || desc.isEmpty()) {
                 Toast.makeText(AddFilmActivity.this, "Fill all of the fields!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             int year = Integer.parseInt(yearStr);
-            Film newFilm = new Film(0, title, selectedGenre, year);
+            Film newFilm = new Film(0, title, selectedGenre, year, desc);
 
-            Films.addFilm(newFilm);
-            FilmStorage.saveFilms(this,Films.getFilms());
+            Unit.getFilmRepository().addFilm(newFilm);
+            try {
+                wait(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             Toast.makeText(AddFilmActivity.this, "Film added: " + newFilm.getTitle(), Toast.LENGTH_SHORT).show();
             finish();
         });

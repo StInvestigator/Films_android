@@ -1,4 +1,4 @@
-package com.example.films;
+package com.example.films.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +7,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.films.model.Film;
+import com.example.films.FilmApplication;
+import com.example.films.R;
 
 public class FilmArrayAdapter extends ArrayAdapter<Film> {
     public FilmArrayAdapter() {

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/film_full_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:layout_margin="1sp"
+            android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="Genre: "
+                android:layout_gravity="start|bottom"
+                android:layout_margin="1sp" />
+
+        <TextView
+                android:id="@+id/film_full_genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="1sp" />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="Year of release: "
+                android:layout_gravity="start|bottom"
+                android:layout_margin="1sp" />
+
+        <TextView
+                android:id="@+id/film_full_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="1sp" />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="Description: "
+                android:layout_gravity="start|bottom"
+                android:layout_margin="1sp" />
+
+        <TextView
+                android:id="@+id/film_full_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="1sp" />
+    </LinearLayout>
+
+    <Button
+            android:id="@+id/bntBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50sp"
+            android:textSize="30sp"
+        android:text="Back"/>
+
+</LinearLayout>

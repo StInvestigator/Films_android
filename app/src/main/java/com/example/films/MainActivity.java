@@ -1,8 +1,8 @@
 package com.example.films;
 
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.films.model.Film;
+import com.example.films.util.Unit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,14 +32,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ListView list = findViewById(R.id.film_list);
-        Films.getFilms().addAll(FilmStorage.loadFilms(this));
-        list.setAdapter(Films.getAdapter());
+        list.setOnItemClickListener((parent,view,position,id)->{
+            Film film = (Film) parent.getItemAtPosition(position);
+            Intent intent = new Intent(getBaseContext(), FilmFullInfoActivity.class);
+            intent.putExtra("title",film.getTitle());
+            intent.putExtra("genre",film.getGenre());
+            intent.putExtra("description",film.getDescription());
+            intent.putExtra("year",film.getYear());
+            startActivity(intent);
+        });
+        list.setAdapter(Unit.getFilmRepository().getFilmArrayAdapter());
     }
 
     @Override
     protected void onResume() {
         ListView list = findViewById(R.id.film_list);
-        list.setAdapter(Films.getAdapter());
+        list.setAdapter(Unit.getFilmRepository().getFilmArrayAdapter());
         super.onResume();
     }
 

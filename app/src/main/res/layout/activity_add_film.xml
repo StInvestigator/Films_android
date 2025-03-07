@@ -13,6 +13,13 @@
             android:hint="@string/title" />
 
     <EditText
+            android:id="@+id/editDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:hint="@string/description"/>
+
+    <EditText
             android:id="@+id/editYear"
             android:layout_width="match_parent"
             android:layout_marginTop="20sp"
