@@ -5,7 +5,15 @@
             android:title="@string/add"
             />
     <item
+            android:id="@+id/add_genre"
+            android:title="@string/add_genre"
+            />
+    <item
             android:id="@+id/list_films"
             android:title="@string/list"
+            />
+    <item
+            android:id="@+id/list_genres"
+            android:title="@string/genres"
             />
 </menu>

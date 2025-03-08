@@ -1,7 +1,6 @@
 package com.example.films.adapter;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -11,16 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.films.AddFilmActivity;
-import com.example.films.MainActivity;
-import com.example.films.model.Film;
+import com.example.films.AddGenreActivity;
 import com.example.films.FilmApplication;
 import com.example.films.R;
+import com.example.films.model.Film;
+import com.example.films.model.Genre;
 import com.example.films.util.Unit;
 
-public class FilmArrayAdapter extends ArrayAdapter<Film> {
-
-    public FilmArrayAdapter() {
-        super(FilmApplication.getApplication(), R.layout.film_layout, R.id.film_title);
+public class GenreArrayAdapter extends ArrayAdapter<Genre> {
+    public GenreArrayAdapter() {
+        super(FilmApplication.getApplication(), R.layout.genre_layout, R.id.genre_name);
     }
 
     @NonNull
@@ -28,20 +27,18 @@ public class FilmArrayAdapter extends ArrayAdapter<Film> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
 
-        Film film = getItem(position);
-        ((TextView)view.findViewById(R.id.film_title)).setText(film.getTitle());
-        ((TextView)view.findViewById(R.id.film_genre)).setText(film.getGenre());
-        ((TextView)view.findViewById(R.id.film_year)).setText(String.format("%d year", film.getYear()));
+        Genre genre = getItem(position);
+        ((TextView)view.findViewById(R.id.genre_name)).setText(genre.getName());
 
         view.findViewById(R.id.btnUpdate).setOnClickListener(v->{
-            Intent intent = new Intent(parent.getContext(), AddFilmActivity.class);
-            intent.putExtra("id",film.getId());
+            Intent intent = new Intent(parent.getContext(), AddGenreActivity.class);
+            intent.putExtra("id",genre.getId());
             parent.getContext().startActivity(intent);
         });
 
         view.findViewById(R.id.btnDelete).setOnClickListener(v->{
-            Unit.getFilmRepository().deleteFilm(film.getId());
-            remove(film);
+            Unit.getGenreRepository().deleteGenre(genre.getId());
+            remove(genre);
             notifyDataSetChanged();
         });
 

@@ -1,6 +1,8 @@
 package com.example.films;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +33,7 @@ public class AddFilmActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("FGH","add film");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_film);
 
@@ -52,11 +55,16 @@ public class AddFilmActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedGenre = genres.get(position);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedGenre = "";
             }
         });
+
+        Intent intent = getIntent();
+        int id = intent.getIntExtra("id",-1);
+        Log.d("FGH","intent got");
 
         btnSave.setOnClickListener(v -> {
             String title = editTitle.getText().toString().trim();
@@ -71,29 +79,51 @@ public class AddFilmActivity extends AppCompatActivity {
             int year = Integer.parseInt(yearStr);
             Film newFilm = new Film(0, title, selectedGenre, year, desc);
 
-            Unit.getFilmRepository().addFilm(newFilm);
+            if(id!=-1){
+                Unit.getFilmRepository().updateFilm(newFilm, id);
+            }
+            else Unit.getFilmRepository().addFilm(newFilm);
             try {
                 wait(50);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            Toast.makeText(AddFilmActivity.this, "Film added: " + newFilm.getTitle(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddFilmActivity.this, "Success! ", Toast.LENGTH_SHORT).show();
             finish();
         });
+
+        if (id != -1) {
+            Log.d("FGH","data start");
+            Film film = Unit.getFilmRepository().find(id);
+            Log.d("FGH","data id");
+            editTitle.setText(film.getTitle());
+            editDesc.setText(film.getDescription());
+            editYear.setText(Integer.toString(film.getYear()));
+            Log.d("FGH","data spinner");
+            spinnerGenre.setSelection(Unit.getGenreRepository().getPosition(film.getGenre()));
+            Log.d("FGH","data update");
+        }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main,menu);
+        inflater.inflate(R.menu.menu_main, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
-        if(item.getItemId()==R.id.list_films){
-            finish();
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.list_films) {
+            Intent intent = new Intent(getBaseContext(), MainActivity.class);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.add_genre) {
+            Intent intent = new Intent(getBaseContext(), AddGenreActivity.class);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.list_genres) {
+            Intent intent = new Intent(getBaseContext(), GenresListActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

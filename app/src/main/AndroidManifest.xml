@@ -18,6 +18,14 @@
                 android:exported="false">
         </activity>
         <activity
+                android:name=".AddGenreActivity"
+                android:exported="false">
+        </activity>
+        <activity
+                android:name=".GenresListActivity"
+                android:exported="false">
+        </activity>
+        <activity
                 android:name=".FilmFullInfoActivity"
                 android:exported="false">
         </activity>

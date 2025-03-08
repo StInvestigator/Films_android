@@ -2,6 +2,7 @@ package com.example.films.model;
 
 import android.annotation.SuppressLint;
 import android.database.Cursor;
+import android.util.Log;
 
 public class Film {
     private int id;
@@ -11,13 +12,14 @@ public class Film {
     private int year;
 
     @SuppressLint("Range")
-    public Film(Cursor cursor){
+    public Film(Cursor cursor) {
         this.id = cursor.getInt(cursor.getColumnIndex("id"));
-        this.title = cursor.getString(cursor.getColumnIndex("title"));;
-        this.genre = cursor.getString(cursor.getColumnIndex("genre"));;
-        this.year = cursor.getInt(cursor.getColumnIndex("year"));;
-        this.description = cursor.getString(cursor.getColumnIndex("description"));;
+        this.title = cursor.getString(cursor.getColumnIndex("title"));
+        this.genre = cursor.getString(cursor.getColumnIndex("genre"));
+        this.year = cursor.getInt(cursor.getColumnIndex("year"));
+        this.description = cursor.getString(cursor.getColumnIndex("description"));
     }
+
     public Film(int id, String title, String genre, int year, String description) {
         this.id = id;
         this.title = title;
@@ -42,7 +44,7 @@ public class Film {
         return year;
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return description;
     }
 }
