@@ -6,6 +6,8 @@ import com.example.films.domain.FilmSQLHelper;
 import com.example.films.domain.repository.FilmRepository;
 import com.example.films.domain.repository.GenreRepository;
 
+import java.sql.SQLException;
+
 public class Unit {
     private FilmSQLHelper filmSQLHelper = new FilmSQLHelper();
     private FilmRepository filmRepository;
@@ -14,10 +16,14 @@ public class Unit {
     private static Unit instance;
 
     static{
-        instance = new Unit();
+        try {
+            instance = new Unit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private Unit(){
+    private Unit() throws SQLException {
         filmRepository = new FilmRepository(filmSQLHelper);
         genreRepository = new GenreRepository(filmSQLHelper);
     }

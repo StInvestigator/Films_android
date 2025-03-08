@@ -18,6 +18,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.films.model.Film;
 import com.example.films.util.Unit;
 
+import java.sql.SQLException;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -32,22 +34,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ListView list = findViewById(R.id.film_list);
-        list.setOnItemClickListener((parent,view,position,id)->{
-            Film film = (Film) parent.getItemAtPosition(position);
-            Intent intent = new Intent(getBaseContext(), FilmFullInfoActivity.class);
-            intent.putExtra("title",film.getTitle());
-            intent.putExtra("genre",film.getGenre());
-            intent.putExtra("description",film.getDescription());
-            intent.putExtra("year",film.getYear());
-            startActivity(intent);
-        });
-        list.setAdapter(Unit.getFilmRepository().getFilmArrayAdapter());
+
+        try {
+            list.setAdapter(Unit.getFilmRepository().getFilmArrayAdapter());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     protected void onResume() {
         ListView list = findViewById(R.id.film_list);
-        list.setAdapter(Unit.getFilmRepository().getFilmArrayAdapter());
+        try {
+            list.setAdapter(Unit.getFilmRepository().getFilmArrayAdapter());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         super.onResume();
     }
 

@@ -11,4 +11,10 @@ public class FilmApplication extends Application {
     public FilmApplication(){
         _app = this;
     }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        _app = this;
+    }
 }

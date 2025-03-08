@@ -4,24 +4,25 @@ import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable
 public class Film {
-    private int id;
+    @DatabaseField(columnName = "id", generatedId = true)
+    private Integer id;
+    @DatabaseField(columnName = "title", canBeNull = false)
     private String title;
-    private String genre;
+    @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
+    private Genre genre;
+    @DatabaseField(columnName = "description")
     private String description;
+    @DatabaseField(columnName = "year")
     private int year;
 
-    @SuppressLint("Range")
-    public Film(Cursor cursor) {
-        this.id = cursor.getInt(cursor.getColumnIndex("id"));
-        this.title = cursor.getString(cursor.getColumnIndex("title"));
-        this.genre = cursor.getString(cursor.getColumnIndex("genre"));
-        this.year = cursor.getInt(cursor.getColumnIndex("year"));
-        this.description = cursor.getString(cursor.getColumnIndex("description"));
-    }
+    public Film(){}
 
-    public Film(int id, String title, String genre, int year, String description) {
-        this.id = id;
+    public Film(String title, Genre genre, int year, String description) {
         this.title = title;
         this.genre = genre;
         this.year = year;
@@ -37,7 +38,7 @@ public class Film {
     }
 
     public String getGenre() {
-        return genre;
+        return genre.getName();
     }
 
     public int getYear() {
@@ -46,5 +47,9 @@ public class Film {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

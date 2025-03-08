@@ -11,11 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.films.AddFilmActivity;
+import com.example.films.FilmFullInfoActivity;
 import com.example.films.MainActivity;
 import com.example.films.model.Film;
 import com.example.films.FilmApplication;
 import com.example.films.R;
 import com.example.films.util.Unit;
+
+import java.sql.SQLException;
 
 public class FilmArrayAdapter extends ArrayAdapter<Film> {
 
@@ -29,18 +32,29 @@ public class FilmArrayAdapter extends ArrayAdapter<Film> {
         View view = super.getView(position, convertView, parent);
 
         Film film = getItem(position);
-        ((TextView)view.findViewById(R.id.film_title)).setText(film.getTitle());
-        ((TextView)view.findViewById(R.id.film_genre)).setText(film.getGenre());
-        ((TextView)view.findViewById(R.id.film_year)).setText(String.format("%d year", film.getYear()));
-
-        view.findViewById(R.id.btnUpdate).setOnClickListener(v->{
+        ((TextView) view.findViewById(R.id.film_title)).setText(film.getTitle());
+        ((TextView) view.findViewById(R.id.film_genre)).setText(film.getGenre());
+        ((TextView) view.findViewById(R.id.film_year)).setText(String.format("%d year", film.getYear()));
+        view.setOnClickListener(v -> {
+            Intent intent = new Intent(parent.getContext(), FilmFullInfoActivity.class);
+            intent.putExtra("title", film.getTitle());
+            intent.putExtra("genre", film.getGenre());
+            intent.putExtra("description", film.getDescription());
+            intent.putExtra("year", film.getYear());
+            parent.getContext().startActivity(intent);
+        });
+        view.findViewById(R.id.btnUpdate).setOnClickListener(v -> {
             Intent intent = new Intent(parent.getContext(), AddFilmActivity.class);
-            intent.putExtra("id",film.getId());
+            intent.putExtra("id", film.getId());
             parent.getContext().startActivity(intent);
         });
 
-        view.findViewById(R.id.btnDelete).setOnClickListener(v->{
-            Unit.getFilmRepository().deleteFilm(film.getId());
+        view.findViewById(R.id.btnDelete).setOnClickListener(v -> {
+            try {
+                Unit.getFilmRepository().deleteFilm(film.getId());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             remove(film);
             notifyDataSetChanged();
         });

@@ -36,7 +36,6 @@ public class AddGenreActivity extends AppCompatActivity {
         editName = findViewById(R.id.editName);
         btnSave = findViewById(R.id.btnSave);
 
-        Log.d("FGH","here");
         Intent intent = getIntent();
         int id = intent.getIntExtra("id", -1);
 
@@ -48,7 +47,7 @@ public class AddGenreActivity extends AppCompatActivity {
                 return;
             }
 
-            Genre genre = new Genre(0, name);
+            Genre genre = new Genre(name);
 
             if (id != -1) {
                 Unit.getGenreRepository().updateGenre(genre, id);
@@ -60,11 +59,11 @@ public class AddGenreActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
             Toast.makeText(AddGenreActivity.this, "Success!", Toast.LENGTH_SHORT).show();
-            finish();
+            Intent intent2 = new Intent(getBaseContext(), GenresListActivity.class);
+            startActivity(intent2);
         });
 
         if (id != -1) {
-            Log.d("FGH","edit name");
             editName.setText(Unit.getGenreRepository().find(id).getName());
         }
     }

@@ -21,6 +21,7 @@ import com.example.films.model.Film;
 import com.example.films.model.Genre;
 import com.example.films.util.Unit;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +34,6 @@ public class AddFilmActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("FGH","add film");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_film);
 
@@ -64,7 +64,6 @@ public class AddFilmActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int id = intent.getIntExtra("id",-1);
-        Log.d("FGH","intent got");
 
         btnSave.setOnClickListener(v -> {
             String title = editTitle.getText().toString().trim();
@@ -77,7 +76,7 @@ public class AddFilmActivity extends AppCompatActivity {
             }
 
             int year = Integer.parseInt(yearStr);
-            Film newFilm = new Film(0, title, selectedGenre, year, desc);
+            Film newFilm = new Film(title, Unit.getGenreRepository().find(selectedGenre), year, desc);
 
             if(id!=-1){
                 Unit.getFilmRepository().updateFilm(newFilm, id);
@@ -89,19 +88,21 @@ public class AddFilmActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
             Toast.makeText(AddFilmActivity.this, "Success! ", Toast.LENGTH_SHORT).show();
-            finish();
+            Intent intent2 = new Intent(getBaseContext(), MainActivity.class);
+            startActivity(intent2);
         });
 
         if (id != -1) {
-            Log.d("FGH","data start");
-            Film film = Unit.getFilmRepository().find(id);
-            Log.d("FGH","data id");
+            Film film = null;
+            try {
+                film = Unit.getFilmRepository().find(id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             editTitle.setText(film.getTitle());
             editDesc.setText(film.getDescription());
             editYear.setText(Integer.toString(film.getYear()));
-            Log.d("FGH","data spinner");
             spinnerGenre.setSelection(Unit.getGenreRepository().getPosition(film.getGenre()));
-            Log.d("FGH","data update");
         }
     }
 
